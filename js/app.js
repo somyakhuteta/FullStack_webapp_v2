@@ -1,4 +1,3 @@
-// StudyFlow: compact vanilla JavaScript implementation
 const $ = id => document.getElementById(id);
 let tasks = JSON.parse(localStorage.tasks || '[]'), editing = null, deleting = null;
 let month = new Date(), selected = new Date().toISOString().slice(0,10);
