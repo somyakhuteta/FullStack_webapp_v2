@@ -1,0 +1,197 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <meta name="theme-color" content="#f5f7fb">
+  <meta name="description" content="StudyFlow helps students organize assignments, deadlines, and study progress.">
+  <title>StudyFlow — Student Planner</title>
+  <link rel="stylesheet" href="css/style.css">
+  <script src="js/app.js" defer></script>
+</head>
+<body>
+  <div class="app-shell">
+    <aside class="sidebar" id="sidebar">
+      <a class="brand" href="#dashboard" aria-label="StudyFlow home" data-view-link="dashboard">
+        <span class="brand-mark" aria-hidden="true">S</span>
+        <span class="brand-copy"><strong>StudyFlow</strong><small>STUDENT PLANNER</small></span>
+      </a>
+
+      <div class="sidebar-label">WORKSPACE</div>
+      <nav class="primary-nav" aria-label="Main navigation">
+        <button class="nav-link active" type="button" data-view-link="dashboard"><span class="nav-icon">▦</span> Dashboard</button>
+        <button class="nav-link" type="button" data-view-link="tasks"><span class="nav-icon">☷</span> All tasks <span class="nav-count" id="navTaskCount">0</span></button>
+        <button class="nav-link" type="button" data-view-link="calendar"><span class="nav-icon">▦</span> Calendar</button>
+      </nav>
+
+      <div class="sidebar-label subjects-label">YOUR SUBJECTS</div>
+      <div class="subject-list" id="subjectList">
+        <span class="subject-dot dot-blue"></span><span>Data Structures</span>
+        <span class="subject-dot dot-violet"></span><span>Web Development</span>
+        <span class="subject-dot dot-orange"></span><span>Probability</span>
+        <span class="subject-dot dot-green"></span><span>Microprocessors</span>
+      </div>
+
+      <div class="sidebar-bottom">
+        <div class="sidebar-tip">
+          <span class="tip-icon">✦</span>
+          <strong>Small steps add up.</strong>
+          <p>Focus on one important task at a time.</p>
+        </div>
+        <button class="nav-link settings-link" id="themeToggle" type="button">
+          <span class="nav-icon" id="themeIcon">☾</span> <span id="themeLabel">Dark appearance</span>
+        </button>
+        <div class="profile-row">
+          <div class="avatar">S</div>
+          <div class="profile-copy"><strong>Student</strong><small>Keep making progress</small></div>
+          <span class="profile-menu" aria-hidden="true">•••</span>
+        </div>
+      </div>
+    </aside>
+
+    <div class="main-column">
+      <header class="topbar">
+        <button class="icon-button mobile-menu" id="mobileMenu" type="button" aria-label="Open navigation">☰</button>
+        <div class="breadcrumb"><span>Workspace</span><span class="breadcrumb-slash">/</span><strong id="pageBreadcrumb">Dashboard</strong></div>
+        <div class="topbar-actions">
+          <span class="today-label" id="topDate"></span>
+          <button class="button button-primary button-small" id="topAddTask" type="button"><span aria-hidden="true">＋</span> New task</button>
+        </div>
+      </header>
+
+      <main class="main-content">
+        <!-- Dashboard view -->
+        <section class="view active" id="dashboardView" aria-labelledby="dashboardTitle">
+          <div class="page-heading">
+            <div>
+              <p class="eyebrow" id="greetingEyebrow">YOUR SPACE TO FOCUS</p>
+              <h1 id="dashboardTitle">Good day, student <span class="heading-sparkle">✦</span></h1>
+              <p class="page-subtitle">A little progress each day adds up to big results.</p>
+            </div>
+            <button class="button button-primary" id="dashboardAddTask" type="button"><span aria-hidden="true">＋</span> Add a task</button>
+          </div>
+
+          <div class="stat-grid">
+            <article class="stat-card">
+              <div class="stat-top"><span class="stat-label">Total tasks</span><span class="stat-icon icon-blue">☷</span></div>
+              <div class="stat-number" id="statTotal">0</div>
+              <div class="stat-foot"><span class="stat-foot-dot dot-blue"></span><span>Across all subjects</span></div>
+            </article>
+            <article class="stat-card">
+              <div class="stat-top"><span class="stat-label">Completed</span><span class="stat-icon icon-green">✓</span></div>
+              <div class="stat-number" id="statCompleted">0</div>
+              <div class="stat-foot"><span class="stat-foot-dot dot-green"></span><span>Tasks finished</span></div>
+            </article>
+            <article class="stat-card">
+              <div class="stat-top"><span class="stat-label">Due soon</span><span class="stat-icon icon-orange">◷</span></div>
+              <div class="stat-number" id="statDueSoon">0</div>
+              <div class="stat-foot"><span class="stat-foot-dot dot-orange"></span><span>Due in the next 3 days</span></div>
+            </article>
+            <article class="stat-card">
+              <div class="stat-top"><span class="stat-label">Overdue</span><span class="stat-icon icon-red">!</span></div>
+              <div class="stat-number" id="statOverdue">0</div>
+              <div class="stat-foot"><span class="stat-foot-dot dot-red"></span><span>Needs your attention</span></div>
+            </article>
+          </div>
+
+          <div class="dashboard-grid">
+            <section class="panel task-panel">
+              <div class="panel-heading">
+                <div><h2>Today's focus</h2><p>Make progress on what matters most.</p></div>
+                <button class="text-button" type="button" data-view-link="tasks">View all <span aria-hidden="true">→</span></button>
+              </div>
+              <div class="focus-list" id="focusList"></div>
+            </section>
+
+            <section class="panel progress-panel">
+              <div class="panel-heading"><div><h2>Your progress</h2><p>Every completed task counts.</p></div><span class="progress-emoji">✧</span></div>
+              <div class="progress-summary"><span>Overall completion</span><strong id="progressPercent">0%</strong></div>
+              <div class="progress-track" role="progressbar" aria-label="Overall task completion" aria-valuemin="0" aria-valuemax="100" aria-valuenow="0" id="progressTrack"><div class="progress-fill" id="progressFill"></div></div>
+              <div class="progress-caption" id="progressCaption">Add your first task to get started.</div>
+              <div class="progress-divider"></div>
+              <h3 class="mini-heading">Priority breakdown</h3>
+              <div class="priority-row"><span class="priority-name"><span class="priority-dot priority-high"></span>High priority</span><strong id="highCount">0</strong></div>
+              <div class="priority-row"><span class="priority-name"><span class="priority-dot priority-medium"></span>Medium priority</span><strong id="mediumCount">0</strong></div>
+              <div class="priority-row"><span class="priority-name"><span class="priority-dot priority-low"></span>Low priority</span><strong id="lowCount">0</strong></div>
+            </section>
+          </div>
+
+          <section class="panel upcoming-panel">
+            <div class="panel-heading">
+              <div><h2>Upcoming deadlines</h2><p>Keep an eye on what's coming next.</p></div>
+              <button class="text-button" type="button" data-view-link="calendar">Open calendar <span aria-hidden="true">→</span></button>
+            </div>
+            <div class="deadline-list" id="deadlineList"></div>
+          </section>
+        </section>
+
+        <!-- All tasks view -->
+        <section class="view" id="tasksView" aria-labelledby="tasksTitle">
+          <div class="page-heading">
+            <div><p class="eyebrow">STAY ON TOP OF IT</p><h1 id="tasksTitle">All tasks</h1><p class="page-subtitle">Your assignments, organized in one place.</p></div>
+            <button class="button button-primary" id="tasksAddTask" type="button"><span aria-hidden="true">＋</span> Add a task</button>
+          </div>
+          <section class="panel task-manager-panel">
+            <div class="filter-toolbar">
+              <label class="search-box"><span aria-hidden="true">⌕</span><span class="visually-hidden">Search tasks</span><input type="search" id="searchInput" placeholder="Search tasks..." autocomplete="off"></label>
+              <label class="filter-control"><span class="visually-hidden">Filter by status</span><select id="statusFilter"><option value="all">All statuses</option><option value="pending">Pending</option><option value="completed">Completed</option><option value="overdue">Overdue</option></select></label>
+              <label class="filter-control"><span class="visually-hidden">Filter by priority</span><select id="priorityFilter"><option value="all">All priorities</option><option value="high">High priority</option><option value="medium">Medium priority</option><option value="low">Low priority</option></select></label>
+              <label class="filter-control"><span class="visually-hidden">Sort tasks</span><select id="sortSelect"><option value="due-asc">Deadline: earliest</option><option value="due-desc">Deadline: latest</option><option value="priority">Priority: highest</option><option value="created">Recently created</option><option value="title">Title: A–Z</option></select></label>
+            </div>
+            <div class="task-list-header"><span id="taskResultsLabel">All tasks</span><button class="text-button" id="clearFilters" type="button">Clear filters</button></div>
+            <div class="task-table" id="taskList"></div>
+          </section>
+          <div class="storage-note"><span aria-hidden="true">ⓘ</span> Your tasks are saved in this browser on this device.</div>
+        </section>
+
+        <!-- Calendar view -->
+        <section class="view" id="calendarView" aria-labelledby="calendarTitle">
+          <div class="page-heading">
+            <div><p class="eyebrow">PLAN AHEAD</p><h1 id="calendarTitle">Deadline calendar</h1><p class="page-subtitle">See what is due and plan your workload.</p></div>
+            <button class="button button-primary" id="calendarAddTask" type="button"><span aria-hidden="true">＋</span> Add a task</button>
+          </div>
+          <section class="panel calendar-panel">
+            <div class="calendar-toolbar">
+              <div><h2 id="calendarMonthLabel">Month</h2><p>Tasks are grouped by their due date.</p></div>
+              <div class="calendar-controls"><button class="icon-button" id="prevMonth" type="button" aria-label="Previous month">‹</button><button class="button button-secondary button-small" id="todayMonth" type="button">Today</button><button class="icon-button" id="nextMonth" type="button" aria-label="Next month">›</button></div>
+            </div>
+            <div class="calendar-grid" id="calendarGrid"></div>
+            <div class="calendar-legend"><span><i class="legend-dot legend-pending"></i> Pending</span><span><i class="legend-dot legend-completed"></i> Completed</span><span><i class="legend-dot legend-overdue"></i> Overdue</span></div>
+          </section>
+          <section class="panel selected-date-panel">
+            <div class="panel-heading"><div><h2 id="selectedDateTitle">Selected date</h2><p>Tasks due on this day.</p></div><button class="text-button" id="addSelectedDateTask" type="button">＋ Add for this date</button></div>
+            <div id="selectedDateTasks"></div>
+          </section>
+        </section>
+
+        <footer class="app-footer"><span>Made for focused learning.</span><span>StudyFlow <span aria-hidden="true">✦</span> <span id="footerYear"></span></span></footer>
+      </main>
+    </div>
+  </div>
+
+  <!-- Add/edit task dialog -->
+  <dialog class="task-dialog" id="taskDialog" aria-labelledby="dialogTitle">
+    <form id="taskForm" novalidate>
+      <div class="dialog-heading"><div><p class="eyebrow">YOUR WORKSPACE</p><h2 id="dialogTitle">Add a new task</h2><p>Break your workload into manageable steps.</p></div><button class="icon-button dialog-close" id="closeTaskDialog" type="button" aria-label="Close dialog">×</button></div>
+      <input type="hidden" id="taskId">
+      <div class="form-field"><label for="taskTitle">Task title <span class="required-mark">*</span></label><input id="taskTitle" name="title" type="text" maxlength="100" placeholder="e.g. Finish DSA assignment" required><small class="field-error" id="titleError"></small></div>
+      <div class="form-row">
+        <div class="form-field"><label for="taskSubject">Subject <span class="required-mark">*</span></label><input id="taskSubject" name="subject" type="text" maxlength="50" list="subjectOptions" placeholder="e.g. Data Structures" required><datalist id="subjectOptions"><option value="Data Structures"><option value="Web Development"><option value="Probability"><option value="Microprocessors"><option value="Mathematics"><option value="Other"></datalist><small class="field-error" id="subjectError"></small></div>
+        <div class="form-field"><label for="taskPriority">Priority</label><select id="taskPriority" name="priority"><option value="medium">Medium</option><option value="high">High</option><option value="low">Low</option></select></div>
+      </div>
+      <div class="form-field"><label for="taskDueDate">Due date <span class="required-mark">*</span></label><input id="taskDueDate" name="dueDate" type="date" required><small class="field-error" id="dateError"></small></div>
+      <div class="form-field"><label for="taskDescription">Notes <span class="optional-label">Optional</span></label><textarea id="taskDescription" name="description" rows="3" maxlength="500" placeholder="Add any details that will help you finish this task."></textarea></div>
+      <div class="dialog-actions"><button class="button button-secondary" id="cancelTaskDialog" type="button">Cancel</button><button class="button button-primary" id="saveTaskButton" type="submit">Save task</button></div>
+    </form>
+  </dialog>
+
+  <!-- Confirmation dialog -->
+  <dialog class="confirm-dialog" id="confirmDialog" aria-labelledby="confirmTitle">
+    <div class="confirm-icon">!</div><h2 id="confirmTitle">Delete this task?</h2><p id="confirmMessage">This action cannot be undone.</p>
+    <div class="dialog-actions"><button class="button button-secondary" id="cancelDelete" type="button">Keep task</button><button class="button button-danger" id="confirmDelete" type="button">Delete task</button></div>
+  </dialog>
+
+  <div class="toast-region" id="toastRegion" aria-live="polite" aria-atomic="true"></div>
+  <div class="mobile-scrim" id="mobileScrim"></div>
+</body>
+</html>
